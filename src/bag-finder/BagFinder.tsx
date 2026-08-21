@@ -1,9 +1,11 @@
-import { CompletionSummary } from './components/CompletionSummary'
-import { FinderProgress } from './components/FinderProgress'
-import { QuestionStep } from './components/QuestionStep'
-import { bagFinderQuestions } from './questions'
-import { useBagFinderState } from './useBagFinderState'
-import './bag-finder.css'
+import { useMemo } from 'react';
+import { CompletionSummary } from './components/CompletionSummary';
+import { FinderProgress } from './components/FinderProgress';
+import { QuestionStep } from './components/QuestionStep';
+import { bagFinderQuestions } from './questions';
+import { getRecommendations } from './recommendations';
+import { useBagFinderState } from './useBagFinderState';
+import './bag-finder.css';
 
 export function BagFinder() {
   const {
@@ -15,7 +17,11 @@ export function BagFinder() {
     goNext,
     goBack,
     restart,
-  } = useBagFinderState(bagFinderQuestions)
+  } = useBagFinderState(bagFinderQuestions);
+  const recommendations = useMemo(
+    () => (state.isComplete ? getRecommendations(state.answers) : undefined),
+    [state.answers, state.isComplete],
+  );
 
   return (
     <div className="bag-finder-app">
@@ -29,11 +35,7 @@ export function BagFinder() {
             <div className="bag-finder-marquee__group" key={groupIndex}>
               {Array.from({ length: 6 }, (_, itemIndex) => (
                 <span className="bag-finder-marquee__item" key={itemIndex}>
-                  <svg
-                    className="bag-finder-marquee__icon"
-                    viewBox="0 0 24 24"
-                    focusable="false"
-                  >
+                  <svg className="bag-finder-marquee__icon" viewBox="0 0 24 24" focusable="false">
                     <circle cx="12" cy="12" r="10" />
                     <circle cx="8.5" cy="9.5" r="1.4" />
                     <circle cx="15.5" cy="9.5" r="1.4" />
@@ -52,15 +54,12 @@ export function BagFinder() {
           <p className="bag-finder-eyebrow">Guided shopping</p>
           <h1>Find your everyday carry</h1>
           <p>
-            Answer a few questions about what you carry and how you like to
-            move. Recommendations will come next.
+            Answer a few questions about what you carry and how you like to move. Recommendations
+            will come next.
           </p>
         </header>
 
-        <section
-          className="bag-finder-panel"
-          aria-labelledby="bag-finder-title"
-        >
+        <section className="bag-finder-panel" aria-labelledby="bag-finder-title">
           <div className="bag-finder-panel__topline">
             <h2 id="bag-finder-title">
               {state.isComplete ? 'Answers saved' : 'Choose what fits best'}
@@ -77,6 +76,7 @@ export function BagFinder() {
             <CompletionSummary
               answers={state.answers}
               questions={bagFinderQuestions}
+              recommendations={recommendations}
               onBack={goBack}
               onRestart={restart}
             />
@@ -94,5 +94,5 @@ export function BagFinder() {
         </section>
       </main>
     </div>
-  )
+  );
 }
