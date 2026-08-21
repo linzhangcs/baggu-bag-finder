@@ -107,7 +107,7 @@ After implementation:
 
 ### Outcome
 
-TODO: Record what was implemented and any deviations from the prompt.
+Implemented deterministic recommendation logic under `src/bag-finder/`, including static candidate bag data, answer-to-need weighting, pure scoring helpers, primary recommendation selection, diverse alternatives, and explanation data tied to selected answers. No result UI was added. `npm run lint` and `npm run build` pass; `npm test` fails because no `test` script exists.
 
 ## 4. Result UI
 
@@ -144,7 +144,7 @@ After implementation:
 
 ### Outcome
 
-TODO: Record what was implemented and any deviations from the prompt.
+Implemented the recommendation result UI by rendering the primary recommendation after completion, showing three alternatives, listing match explanations tied to selected answers, and exposing tradeoffs. The UI uses semantic result cards, native buttons, and a native disclosure for reviewing answers. Comparison UI was intentionally not implemented. `npm run lint` and `npm run build` pass; `npm test` fails because no `test` script exists.
 
 ## 5. Comparison UI
 
