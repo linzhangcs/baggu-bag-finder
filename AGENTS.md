@@ -2,7 +2,8 @@
 
 ## Project Purpose
 
-This repository is for the BAGGU Bag Finder frontend. The app is still at the starter-scaffold stage, so do not infer BAGGU-specific product behavior, content, or design rules until they are defined in the repo or by the user.
+This repository is for the BAGGU Bag Finder frontend. The app is still at the starter-scaffold stage, so do not infer
+BAGGU-specific product behavior, content, or design rules until they are defined in the repo or by the user.
 
 ## Current Frontend Stack
 
@@ -26,7 +27,8 @@ This repository is for the BAGGU Bag Finder frontend. The app is still at the st
 - Use semantic HTML and accessible labels for interactive controls.
 - Preserve visible focus states and keyboard usability.
 - Treat decorative images and icons as decorative with empty `alt` text or `aria-hidden` where appropriate.
-- Design responsive layouts intentionally, with mobile and desktop states checked for readable text, usable controls, and no overlapping content.
+- Design responsive layouts intentionally, with mobile and desktop states checked for readable text, usable controls,
+  and no overlapping content.
 
 ## Change Discipline
 
@@ -38,5 +40,26 @@ This repository is for the BAGGU Bag Finder frontend. The app is still at the st
 ## Verification
 
 - Run `npm run lint` before opening a pull request.
-- Follow the workspace-level testing instructions when modifying JavaScript or TypeScript. If a required script is missing, report that clearly.
+- Follow the workspace-level testing instructions when modifying JavaScript or TypeScript. If a required script is
+  missing, report that clearly.
 - Document public utility behavior changes in `docs/`.
+
+## Session documentation
+
+For substantial implementation or research tasks, create a record in
+`docs/sessions/`.
+
+Use:
+
+`YYYY-MM-DD-NN-short-description.md`
+
+Include:
+
+- User Prompt
+- Outcome
+- Files Changed
+- Decisions Made
+- Deferred
+- Notes
+
+Session records should summarize the work rather than duplicate git history.
