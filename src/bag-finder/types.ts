@@ -1,4 +1,6 @@
-export type QuestionId = 'carry' | 'carryMode' | 'occasion' | 'structure' | 'priority';
+import type { CarryLevel, ProductSizeFact } from '../data/bag-size-data.ts';
+
+export type QuestionId = 'dailyCarry' | 'largestItem' | 'extraRoom' | 'primaryUse';
 
 export type AnswerOption = {
   id: string;
@@ -18,62 +20,49 @@ export type BagFinderState = {
   isComplete: boolean;
 };
 
-export type CapacityNeed = 'small' | 'medium' | 'large' | 'oversized';
+export type FitRequirement =
+  | 'phone'
+  | 'waterBottle'
+  | 'tablet'
+  | 'laptop13'
+  | 'laptop16'
+  | 'groceries'
+  | 'extraLayer'
+  | 'travel';
 
-export type CarryModeNeed = 'crossbody' | 'shoulder' | 'tote' | 'handheld' | 'packable';
+export type UseCase = 'everyday' | 'workSchool' | 'errands' | 'travel' | 'groceries';
 
-export type UseCaseNeed = 'daily' | 'commute' | 'shopping' | 'travel' | 'evening' | 'organization';
+export type ExtraRoomPreference = 'minimal' | 'some' | 'flexible' | 'maximum';
 
-export type StructureNeed = 'soft' | 'semiStructured' | 'protective';
-
-export type PriorityNeed =
-  'compact' | 'capacity' | 'handsFree' | 'organization' | 'giftable' | 'versatile';
-
-export type NeedCategory = 'capacity' | 'carryMode' | 'useCase' | 'structure' | 'priority';
-
-export type WeightedNeed = {
-  category: NeedCategory;
-  value: CapacityNeed | CarryModeNeed | UseCaseNeed | StructureNeed | PriorityNeed;
-  weight: number;
-  answerLabel: string;
-  reason: string;
+export type BagFinderProfile = {
+  requiredFits: FitRequirement[];
+  targetCarryLevel: CarryLevel;
+  extraRoomPreference: ExtraRoomPreference;
+  primaryUse: UseCase;
+  selectedAnswerLabels: string[];
 };
 
-export type BagCandidate = {
-  id: string;
-  name: string;
-  family: string;
-  imageUrl: string;
-  imageAlt: string;
-  bestFor: string;
-  capacitySummary: string;
-  carryStyle: string;
-  organizationSummary: string;
-  laptopFit?: string;
-  price?: string;
-  variantSummary?: string;
-  capacities: CapacityNeed[];
-  carryModes: CarryModeNeed[];
-  useCases: UseCaseNeed[];
-  structures: StructureNeed[];
-  priorities: PriorityNeed[];
-  flexibilityScore: number;
-  tradeoffs: string[];
+export type RecommendationReason = {
+  label: string;
+  detail: string;
 };
 
-export type RecommendationExplanation = {
-  answerLabel: string;
-  reason: string;
-};
-
-export type RecommendationItem = {
-  candidate: BagCandidate;
-  score: number;
-  explanations: RecommendationExplanation[];
+export type BagRecommendationItem = {
+  product: ProductSizeFact;
+  rank: number;
+  reasons: RecommendationReason[];
   tradeoff?: string;
 };
 
-export type RecommendationSet = {
-  primary: RecommendationItem;
-  alternatives: RecommendationItem[];
+export type UnmetRequirement = {
+  requirement: FitRequirement;
+  label: string;
+};
+
+export type BagRecommendationSet = {
+  primary?: BagRecommendationItem;
+  alternatives: BagRecommendationItem[];
+  eligibleOptions: BagRecommendationItem[];
+  nearMatches: BagRecommendationItem[];
+  unmetRequirements: UnmetRequirement[];
 };

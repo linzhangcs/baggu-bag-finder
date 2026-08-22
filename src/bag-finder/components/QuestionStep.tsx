@@ -1,14 +1,14 @@
-import type { Question, QuestionId } from '../types'
+import type { Question, QuestionId } from '../types';
 
 type QuestionStepProps = {
-  question: Question
-  questionIndex: number
-  totalQuestions: number
-  selectedAnswerId?: string
-  onSelectAnswer: (questionId: QuestionId, answerId: string) => void
-  onBack: () => void
-  onNext: () => void
-}
+  question: Question;
+  questionIndex: number;
+  totalQuestions: number;
+  selectedAnswerId?: string;
+  onSelectAnswer: (questionId: QuestionId, answerId: string) => void;
+  onBack: () => void;
+  onNext: () => void;
+};
 
 export function QuestionStep({
   question,
@@ -19,17 +19,17 @@ export function QuestionStep({
   onBack,
   onNext,
 }: QuestionStepProps) {
-  const questionNumber = questionIndex + 1
-  const legendId = `${question.id}-legend`
-  const hintId = `${question.id}-hint`
-  const isLastQuestion = questionNumber === totalQuestions
+  const questionNumber = questionIndex + 1;
+  const legendId = `${question.id}-legend`;
+  const hintId = `${question.id}-hint`;
+  const isLastQuestion = questionNumber === totalQuestions;
 
   return (
     <form
       className="question-step"
       onSubmit={(event) => {
-        event.preventDefault()
-        onNext()
+        event.preventDefault();
+        onNext();
       }}
     >
       <fieldset className="question-step__fieldset" aria-describedby={hintId}>
@@ -40,8 +40,8 @@ export function QuestionStep({
 
         <div className="answer-list">
           {question.options.map((option) => {
-            const inputId = `${question.id}-${option.id}`
-            const isSelected = selectedAnswerId === option.id
+            const inputId = `${question.id}-${option.id}`;
+            const isSelected = selectedAnswerId === option.id;
 
             return (
               <label
@@ -55,14 +55,19 @@ export function QuestionStep({
                   id={inputId}
                   name={question.id}
                   onChange={() => {
-                    onSelectAnswer(question.id, option.id)
+                    onSelectAnswer(question.id, option.id);
                   }}
                   type="radio"
                   value={option.id}
                 />
-                <span>{option.label}</span>
+                <span>
+                  {option.label}
+                  {option.helperText ? (
+                    <small className="answer-option__helper">{option.helperText}</small>
+                  ) : null}
+                </span>
               </label>
-            )
+            );
           })}
         </div>
       </fieldset>
@@ -85,5 +90,5 @@ export function QuestionStep({
         </button>
       </div>
     </form>
-  )
+  );
 }

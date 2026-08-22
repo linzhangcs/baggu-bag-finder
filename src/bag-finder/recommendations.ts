@@ -1,286 +1,458 @@
-import { bagCandidates } from './candidates'
+import { bagSizeData } from '../data/bag-size-data.ts';
+import type { CarryLevel, ProductSizeFact } from '../data/bag-size-data.ts';
+import { bagFinderQuestions } from './questions.ts';
 import type {
-  BagCandidate,
+  BagFinderProfile,
   BagFinderState,
-  NeedCategory,
-  QuestionId,
-  RecommendationExplanation,
-  RecommendationItem,
-  RecommendationSet,
-  WeightedNeed,
-} from './types'
+  BagRecommendationItem,
+  BagRecommendationSet,
+  ExtraRoomPreference,
+  FitRequirement,
+  RecommendationReason,
+  UnmetRequirement,
+  UseCase,
+} from './types.ts';
 
-const answerNeedMap: Partial<Record<QuestionId, Record<string, WeightedNeed[]>>> = {
-  carry: {
-    essentials: [
-      need('capacity', 'small', 4, 'Just the essentials', 'fits a lighter carry'),
-      need('priority', 'compact', 3, 'Just the essentials', 'keeps the profile compact'),
-    ],
-    everyday: [
-      need('capacity', 'medium', 4, 'Everyday items', 'fits a regular daily load'),
-      need('useCase', 'daily', 3, 'Everyday items', 'works for frequent daily use'),
-      need('priority', 'versatile', 2, 'Everyday items', 'keeps the recommendation flexible'),
-    ],
-    'work-school': [
-      need('capacity', 'large', 4, 'Work, school, or a laptop', 'adds room for work or school items'),
-      need('useCase', 'commute', 3, 'Work, school, or a laptop', 'supports commuting needs'),
-      need('priority', 'organization', 2, 'Work, school, or a laptop', 'prioritizes keeping items sorted'),
-    ],
-    bulky: [
-      need('capacity', 'large', 4, 'Groceries, errands, or bulky extras', 'handles bulkier carry'),
-      need('useCase', 'shopping', 4, 'Groceries, errands, or bulky extras', 'supports shopping and errands'),
-      need('priority', 'capacity', 3, 'Groceries, errands, or bulky extras', 'prioritizes hauling room'),
-    ],
-    'travel-organization': [
-      need('useCase', 'travel', 3, 'Travel or organization', 'supports travel use'),
-      need('useCase', 'organization', 3, 'Travel or organization', 'supports organizing items'),
-      need('priority', 'organization', 3, 'Travel or organization', 'prioritizes sorting and access'),
-    ],
-  },
-  carryMode: {
-    crossbody: [
-      need('carryMode', 'crossbody', 5, 'Crossbody or hands-free', 'matches hands-free carry'),
-      need('priority', 'handsFree', 4, 'Crossbody or hands-free', 'prioritizes hands-free wear'),
-    ],
-    shoulder: [
-      need('carryMode', 'shoulder', 5, 'Over the shoulder', 'matches shoulder carry'),
-    ],
-    tote: [
-      need('carryMode', 'tote', 4, 'In hand or as a tote', 'matches tote-style carry'),
-      need('carryMode', 'handheld', 2, 'In hand or as a tote', 'can work as handheld carry'),
-    ],
-    packable: [
-      need('carryMode', 'packable', 5, 'Packed inside another bag', 'works inside another bag'),
-      need('priority', 'compact', 2, 'Packed inside another bag', 'keeps the item packable'),
-    ],
-    'no-preference': [
-      need('priority', 'versatile', 3, 'No strong preference', 'keeps carry options flexible'),
-      need('priority', 'giftable', 2, 'No strong preference', 'leans toward broadly useful picks'),
-    ],
-  },
-  occasion: {
-    errands: [
-      need('useCase', 'daily', 4, 'Daily errands', 'works for regular errand use'),
-      need('priority', 'versatile', 2, 'Daily errands', 'keeps the bag broadly useful'),
-    ],
-    commuting: [
-      need('useCase', 'commute', 5, 'Commuting', 'supports commute use'),
-      need('capacity', 'medium', 2, 'Commuting', 'adds room for daily essentials'),
-    ],
-    shopping: [
-      need('useCase', 'shopping', 5, 'Shopping', 'supports shopping trips'),
-      need('priority', 'capacity', 3, 'Shopping', 'prioritizes carrying capacity'),
-    ],
-    travel: [
-      need('useCase', 'travel', 5, 'Travel', 'supports travel use'),
-      need('capacity', 'large', 2, 'Travel', 'adds room for travel extras'),
-    ],
-    'going-out': [
-      need('useCase', 'evening', 4, 'Going out', 'works for going out'),
-      need('capacity', 'small', 3, 'Going out', 'keeps carry light'),
-      need('priority', 'compact', 2, 'Going out', 'prioritizes compact size'),
-    ],
-  },
-  structure: {
-    soft: [
-      need('structure', 'soft', 4, 'Soft and slouchy', 'matches a soft shape'),
-    ],
-    'casual-shape': [
-      need('structure', 'semiStructured', 4, 'Some shape, but still casual', 'adds casual structure'),
-      need('priority', 'versatile', 2, 'Some shape, but still casual', 'keeps the recommendation flexible'),
-    ],
-    protective: [
-      need('structure', 'protective', 4, 'Structured and protective', 'prioritizes protection'),
-      need('priority', 'organization', 2, 'Structured and protective', 'supports more intentional storage'),
-    ],
-    'not-sure': [
-      need('priority', 'versatile', 3, 'Not sure', 'leans toward flexible everyday options'),
-      need('priority', 'giftable', 2, 'Not sure', 'leans toward broadly useful picks'),
-    ],
-  },
-  priority: {
-    compact: [
-      need('priority', 'compact', 5, 'Compact size', 'prioritizes a smaller profile'),
-      need('capacity', 'small', 2, 'Compact size', 'keeps capacity light'),
-    ],
-    capacity: [
-      need('priority', 'capacity', 5, 'Maximum capacity', 'prioritizes room'),
-      need('capacity', 'large', 3, 'Maximum capacity', 'adds larger capacity'),
-    ],
-    'hands-free': [
-      need('priority', 'handsFree', 5, 'Hands-free wear', 'prioritizes hands-free carry'),
-      need('carryMode', 'crossbody', 3, 'Hands-free wear', 'matches crossbody carry'),
-    ],
-    organization: [
-      need('priority', 'organization', 5, 'Organization', 'prioritizes sorting and access'),
-      need('useCase', 'organization', 2, 'Organization', 'supports organizing items'),
-    ],
-    giftable: [
-      need('priority', 'giftable', 5, 'Giftability or broad appeal', 'leans toward broadly useful picks'),
-      need('priority', 'versatile', 3, 'Giftability or broad appeal', 'keeps the recommendation flexible'),
-    ],
-  },
-}
+const carryLevelRank: Record<CarryLevel, number> = {
+  minimal: 0,
+  light: 1,
+  everyday: 2,
+  roomy: 3,
+  'high-capacity': 4,
+  unknown: 99,
+};
 
-function need(
-  category: NeedCategory,
-  value: WeightedNeed['value'],
-  weight: number,
-  answerLabel: string,
-  reason: string,
-): WeightedNeed {
-  return {
-    category,
-    value,
-    weight,
-    answerLabel,
-    reason,
-  }
-}
+const displayOrder = [
+  'small-nylon-bowler-bag',
+  'nylon-bowler-bag',
+  'small-nylon-crescent-bag',
+  'nylon-loaf-bag',
+  'small-nylon-meringue-bag',
+  'medium-nylon-crescent-bag',
+  'nylon-meringue-bag',
+  'medium-nylon-bowler-bag',
+  'everyday-cloud-bag',
+  'large-nylon-crescent-bag',
+  'cloud-bag',
+  'small-cloud-carry-on',
+  'standard-baggu',
+  'cloud-carry-on',
+  'baby-baggu',
+  'big-baggu',
+];
 
-export function getRecommendations(
+const displayOrderIndex = new Map(displayOrder.map((id, index) => [id, index]));
+
+export function getBagRecommendation(
   answers: BagFinderState['answers'],
-  candidates: BagCandidate[] = bagCandidates,
-): RecommendationSet {
-  const selectedNeeds = getSelectedNeeds(answers)
-  const scoredCandidates = candidates
-    .map((candidate) => scoreCandidate(candidate, selectedNeeds))
-    .sort(compareRecommendationItems)
-
-  const primary = scoredCandidates[0]
-
-  if (!primary) {
-    throw new Error('At least one bag candidate is required.')
-  }
-
-  return {
-    primary,
-    alternatives: selectAlternatives(primary, scoredCandidates),
-  }
-}
-
-export function getSelectedNeeds(
-  answers: BagFinderState['answers'],
-): WeightedNeed[] {
-  return Object.entries(answers).flatMap(([questionId, answerId]) => {
-    if (!answerId) {
-      return []
-    }
-
-    return answerNeedMap[questionId as QuestionId]?.[answerId] ?? []
-  })
-}
-
-function scoreCandidate(
-  candidate: BagCandidate,
-  selectedNeeds: WeightedNeed[],
-): RecommendationItem {
-  const matchedNeeds = selectedNeeds.filter((selectedNeed) =>
-    candidateSupportsNeed(candidate, selectedNeed),
-  )
-  const score = matchedNeeds.reduce(
-    (total, selectedNeed) => total + selectedNeed.weight,
-    candidate.flexibilityScore,
-  )
+  products: ProductSizeFact[] = bagSizeData,
+): BagRecommendationSet {
+  const profile = getBagFinderProfile(answers);
+  const eligibleProducts = getEligibleBags(profile, products);
+  const rankedEligible = rankBagRecommendations(profile, eligibleProducts);
+  const nearMatches = rankBagRecommendations(
+    profile,
+    products.filter((product) => !eligibleProducts.includes(product)),
+  ).slice(0, 4);
+  const unmetRequirements =
+    rankedEligible.length === 0 ? getUnmetRequirements(profile, products) : [];
 
   return {
-    candidate,
-    score,
-    explanations: getExplanations(matchedNeeds),
-    tradeoff: candidate.tradeoffs[0],
-  }
+    primary: rankedEligible[0],
+    alternatives: rankedEligible.slice(1, 3).map((item) => ({
+      ...item,
+      tradeoff: getAlternativeTradeoff(item.product, rankedEligible[0]?.product),
+    })),
+    eligibleOptions: rankedEligible,
+    nearMatches,
+    unmetRequirements,
+  };
 }
 
-function candidateSupportsNeed(
-  candidate: BagCandidate,
-  selectedNeed: WeightedNeed,
+export function getEligibleBags(
+  profile: BagFinderProfile,
+  products: ProductSizeFact[] = bagSizeData,
 ) {
-  switch (selectedNeed.category) {
-    case 'capacity':
-      return includesNeed(candidate.capacities, selectedNeed.value)
-    case 'carryMode':
-      return includesNeed(candidate.carryModes, selectedNeed.value)
-    case 'useCase':
-      return includesNeed(candidate.useCases, selectedNeed.value)
-    case 'structure':
-      return includesNeed(candidate.structures, selectedNeed.value)
-    case 'priority':
-      return includesNeed(candidate.priorities, selectedNeed.value)
+  return products.filter((product) =>
+    profile.requiredFits.every((requirement) => productMeetsRequirement(product, requirement)),
+  );
+}
+
+export function rankBagRecommendations(
+  profile: BagFinderProfile,
+  products: ProductSizeFact[] = bagSizeData,
+): BagRecommendationItem[] {
+  return products
+    .map((product) => ({
+      product,
+      rank: getProductRank(product, profile),
+      reasons: getRecommendationReasons(product, profile),
+    }))
+    .sort(compareRecommendations);
+}
+
+export function getBagFinderProfile(answers: BagFinderState['answers']): BagFinderProfile {
+  const requiredFits = dedupeRequirements([
+    ...getDailyCarryRequirements(answers.dailyCarry),
+    ...getLargestItemRequirements(answers.largestItem),
+  ]);
+
+  return {
+    requiredFits,
+    targetCarryLevel: getTargetCarryLevel(answers),
+    extraRoomPreference: getExtraRoomPreference(answers.extraRoom),
+    primaryUse: getPrimaryUse(answers.primaryUse),
+    selectedAnswerLabels: getSelectedAnswerLabels(answers),
+  };
+}
+
+function getDailyCarryRequirements(answerId?: string): FitRequirement[] {
+  switch (answerId) {
+    case 'essentials':
+      return ['phone'];
+    case 'water-bottle':
+      return ['phone', 'waterBottle'];
+    case 'tablet-pouches':
+      return ['phone', 'tablet'];
+    case 'laptop':
+      return ['phone', 'laptop13'];
+    case 'groceries-bulky':
+      return ['groceries'];
+    default:
+      return [];
   }
 }
 
-function includesNeed(values: readonly string[], selectedValue: string) {
-  return values.includes(selectedValue)
+function getLargestItemRequirements(answerId?: string): FitRequirement[] {
+  switch (answerId) {
+    case 'small':
+      return ['phone'];
+    case 'water-bottle':
+      return ['waterBottle'];
+    case 'tablet':
+      return ['tablet'];
+    case 'laptop-13':
+      return ['laptop13'];
+    case 'laptop-16':
+      return ['laptop16'];
+    case 'groceries':
+      return ['groceries'];
+    default:
+      return [];
+  }
 }
 
-function getExplanations(
-  matchedNeeds: WeightedNeed[],
-): RecommendationExplanation[] {
-  const explanationsByAnswer = new Map<string, RecommendationExplanation>()
+function getTargetCarryLevel(answers: BagFinderState['answers']): CarryLevel {
+  if (answers.dailyCarry === 'groceries-bulky' || answers.largestItem === 'groceries') {
+    return 'high-capacity';
+  }
 
-  for (const matchedNeed of matchedNeeds) {
-    if (!explanationsByAnswer.has(matchedNeed.answerLabel)) {
-      explanationsByAnswer.set(matchedNeed.answerLabel, {
-        answerLabel: matchedNeed.answerLabel,
-        reason: matchedNeed.reason,
-      })
+  if (
+    answers.largestItem === 'laptop-16' ||
+    answers.extraRoom === 'maximum' ||
+    answers.primaryUse === 'travel'
+  ) {
+    return 'roomy';
+  }
+
+  if (
+    answers.dailyCarry === 'tablet-pouches' ||
+    answers.dailyCarry === 'laptop' ||
+    answers.largestItem === 'tablet' ||
+    answers.largestItem === 'laptop-13' ||
+    answers.extraRoom === 'flexible'
+  ) {
+    return 'everyday';
+  }
+
+  if (answers.dailyCarry === 'water-bottle' || answers.largestItem === 'water-bottle') {
+    return answers.extraRoom === 'just-enough' ? 'light' : 'everyday';
+  }
+
+  return answers.extraRoom === 'little-extra' ? 'light' : 'minimal';
+}
+
+function getExtraRoomPreference(answerId?: string): ExtraRoomPreference {
+  switch (answerId) {
+    case 'little-extra':
+      return 'some';
+    case 'flexible':
+      return 'flexible';
+    case 'maximum':
+      return 'maximum';
+    default:
+      return 'minimal';
+  }
+}
+
+function getPrimaryUse(answerId?: string): UseCase {
+  switch (answerId) {
+    case 'work-school':
+      return 'workSchool';
+    case 'errands':
+      return 'errands';
+    case 'travel':
+      return 'travel';
+    case 'groceries':
+      return 'groceries';
+    default:
+      return 'everyday';
+  }
+}
+
+function dedupeRequirements(requirements: FitRequirement[]) {
+  const requirementSet = new Set(requirements);
+
+  if (requirementSet.has('laptop16')) {
+    requirementSet.delete('laptop13');
+  }
+
+  return Array.from(requirementSet);
+}
+
+function productMeetsRequirement(product: ProductSizeFact, requirement: FitRequirement) {
+  switch (requirement) {
+    case 'phone':
+      return product.attributes.fitsPhone === true;
+    case 'waterBottle':
+      return product.attributes.fitsWaterBottle === true;
+    case 'tablet':
+      return product.attributes.fitsTablet === true;
+    case 'laptop13':
+      return (
+        product.attributes.fitsLaptop === true &&
+        (product.attributes.confirmedLaptopSize?.includes('13/14') ||
+          product.attributes.confirmedLaptopSize?.includes('16'))
+      );
+    case 'laptop16':
+      return (
+        product.attributes.fitsLaptop === true &&
+        product.attributes.confirmedLaptopSize?.includes('16')
+      );
+    case 'groceries':
+      return product.attributes.goodForGroceries === true;
+    case 'extraLayer':
+      return product.attributes.fitsExtraLayer === true;
+    case 'travel':
+      return product.attributes.goodForTravel === true;
+  }
+}
+
+function getProductRank(product: ProductSizeFact, profile: BagFinderProfile) {
+  const levelScore = getCarryLevelDistance(product.attributes.carryLevel, profile);
+  const useCaseScore = getUseCaseDistance(product, profile.primaryUse);
+  const fitEvidenceScore = getFitEvidenceDistance(product, profile.requiredFits);
+  const imageScore = product.imageUrl ? 0 : 1;
+  const stableOrderScore = displayOrderIndex.get(product.id) ?? 99;
+
+  return (
+    levelScore * 100 +
+    useCaseScore * 20 +
+    fitEvidenceScore * 5 +
+    imageScore +
+    stableOrderScore / 100
+  );
+}
+
+function getCarryLevelDistance(productLevel: CarryLevel, profile: BagFinderProfile) {
+  const productRank = carryLevelRank[productLevel];
+  const targetRank = carryLevelRank[profile.targetCarryLevel];
+
+  if (productRank === 99 || targetRank === 99) {
+    return 20;
+  }
+
+  const distance = Math.abs(productRank - targetRank);
+  const oversizePenalty = Math.max(0, productRank - targetRank);
+  const undersizePenalty = Math.max(0, targetRank - productRank);
+
+  switch (profile.extraRoomPreference) {
+    case 'minimal':
+      return distance + oversizePenalty * 1.5 + undersizePenalty * 3;
+    case 'some':
+      return distance + oversizePenalty * 0.75 + undersizePenalty * 3;
+    case 'flexible':
+      return distance + oversizePenalty * 0.2 + undersizePenalty * 2;
+    case 'maximum':
+      return Math.max(0, targetRank - productRank) * 3;
+  }
+}
+
+function getUseCaseDistance(product: ProductSizeFact, primaryUse: UseCase) {
+  switch (primaryUse) {
+    case 'groceries':
+      return product.attributes.goodForGroceries === true ? 0 : 8;
+    case 'travel':
+      return product.attributes.goodForTravel === true ? 0 : 4;
+    case 'workSchool':
+      if (product.attributes.fitsLaptop === true) {
+        return 0;
+      }
+      return product.attributes.fitsTablet === true ? 2 : 4;
+    case 'errands':
+      return product.attributes.goodForGroceries === true ? 3 : 0;
+    case 'everyday':
+      return ['minimal', 'light', 'everyday'].includes(product.attributes.carryLevel) ? 0 : 2;
+  }
+}
+
+function getFitEvidenceDistance(product: ProductSizeFact, requirements: FitRequirement[]) {
+  return requirements.filter((requirement) => !productMeetsRequirement(product, requirement))
+    .length;
+}
+
+function getRecommendationReasons(
+  product: ProductSizeFact,
+  profile: BagFinderProfile,
+): RecommendationReason[] {
+  const reasons: RecommendationReason[] = [];
+
+  for (const requirement of profile.requiredFits) {
+    if (productMeetsRequirement(product, requirement)) {
+      reasons.push({
+        label: getRequirementLabel(requirement),
+        detail: getRequirementDetail(product, requirement),
+      });
     }
   }
 
-  return Array.from(explanationsByAnswer.values()).slice(0, 3)
+  if (product.attributes.carryLevel === profile.targetCarryLevel) {
+    reasons.push({
+      label: 'Capacity',
+      detail: `Matches a ${profile.targetCarryLevel} carry level based on confirmed BAGGU fit data.`,
+    });
+  }
+
+  const useCaseReason = getUseCaseReason(product, profile.primaryUse);
+
+  if (useCaseReason) {
+    reasons.push(useCaseReason);
+  }
+
+  return reasons.slice(0, 4);
 }
 
-function compareRecommendationItems(
-  first: RecommendationItem,
-  second: RecommendationItem,
+function getRequirementLabel(requirement: FitRequirement) {
+  switch (requirement) {
+    case 'phone':
+      return 'Phone';
+    case 'waterBottle':
+      return 'Water bottle';
+    case 'tablet':
+      return 'Tablet';
+    case 'laptop13':
+      return '13/14" laptop';
+    case 'laptop16':
+      return '16" laptop';
+    case 'groceries':
+      return 'Groceries';
+    case 'extraLayer':
+      return 'Extra layer';
+    case 'travel':
+      return 'Travel';
+  }
+}
+
+function getRequirementDetail(product: ProductSizeFact, requirement: FitRequirement) {
+  switch (requirement) {
+    case 'phone':
+      return `${product.canonicalName} lists phone fit in BAGGU fit data.`;
+    case 'waterBottle':
+      return `${product.canonicalName} lists water bottle fit in BAGGU fit data.`;
+    case 'tablet':
+      return `${product.canonicalName} lists Puffy Tablet Sleeve fit.`;
+    case 'laptop13':
+    case 'laptop16':
+      return `${product.canonicalName} lists ${product.attributes.confirmedLaptopSize}.`;
+    case 'groceries':
+      return `${product.canonicalName} is confirmed for a full load of groceries.`;
+    case 'extraLayer':
+      return `${product.canonicalName} is confirmed for larger soft items.`;
+    case 'travel':
+      return `${product.canonicalName} lists travel-oriented items in BAGGU fit data.`;
+  }
+}
+
+function getUseCaseReason(
+  product: ProductSizeFact,
+  primaryUse: UseCase,
+): RecommendationReason | undefined {
+  if (primaryUse === 'travel' && product.attributes.goodForTravel === true) {
+    return {
+      label: 'Travel',
+      detail: 'BAGGU fit data lists travel-oriented items like packing cubes or a Dopp kit.',
+    };
+  }
+
+  if (primaryUse === 'groceries' && product.attributes.goodForGroceries === true) {
+    return {
+      label: 'Groceries',
+      detail: product.capacityOrVolume ?? 'BAGGU confirms grocery capacity for this product.',
+    };
+  }
+
+  if (
+    primaryUse === 'workSchool' &&
+    (product.attributes.fitsLaptop === true || product.attributes.fitsTablet === true)
+  ) {
+    return {
+      label: 'Work or school',
+      detail: 'Confirmed tech fit makes this a better match for work or school carry.',
+    };
+  }
+
+  return undefined;
+}
+
+function getAlternativeTradeoff(
+  product: ProductSizeFact,
+  primaryProduct: ProductSizeFact | undefined,
 ) {
-  const scoreDifference = second.score - first.score
-
-  if (scoreDifference !== 0) {
-    return scoreDifference
+  if (!primaryProduct) {
+    return undefined;
   }
 
-  return second.candidate.flexibilityScore - first.candidate.flexibilityScore
+  const productLevel = carryLevelRank[product.attributes.carryLevel];
+  const primaryLevel = carryLevelRank[primaryProduct.attributes.carryLevel];
+
+  if (productLevel < primaryLevel) {
+    return 'A smaller confirmed option if you want less bag.';
+  }
+
+  if (productLevel > primaryLevel) {
+    return 'A roomier confirmed option if you want more flexibility.';
+  }
+
+  if (product.productFamily !== primaryProduct.productFamily) {
+    return 'A different bag shape with similar confirmed capacity needs.';
+  }
+
+  return undefined;
 }
 
-function selectAlternatives(
-  primary: RecommendationItem,
-  scoredCandidates: RecommendationItem[],
-) {
-  const alternatives: RecommendationItem[] = []
-  const selectedFamilies = new Set([primary.candidate.family])
+function getUnmetRequirements(
+  profile: BagFinderProfile,
+  products: ProductSizeFact[],
+): UnmetRequirement[] {
+  return profile.requiredFits
+    .filter(
+      (requirement) => !products.some((product) => productMeetsRequirement(product, requirement)),
+    )
+    .map((requirement) => ({
+      requirement,
+      label: getRequirementLabel(requirement),
+    }));
+}
 
-  for (const item of scoredCandidates) {
-    if (item.candidate.id === primary.candidate.id) {
-      continue
-    }
+function getSelectedAnswerLabels(answers: BagFinderState['answers']) {
+  return bagFinderQuestions.flatMap((question) => {
+    const selectedAnswerId = answers[question.id];
+    const option = question.options.find((answer) => answer.id === selectedAnswerId);
 
-    if (selectedFamilies.has(item.candidate.family)) {
-      continue
-    }
+    return option ? [option.label] : [];
+  });
+}
 
-    alternatives.push(item)
-    selectedFamilies.add(item.candidate.family)
-
-    if (alternatives.length === 3) {
-      return alternatives
-    }
-  }
-
-  for (const item of scoredCandidates) {
-    if (
-      item.candidate.id !== primary.candidate.id &&
-      !alternatives.some(
-        (alternative) => alternative.candidate.id === item.candidate.id,
-      )
-    ) {
-      alternatives.push(item)
-    }
-
-    if (alternatives.length === 3) {
-      return alternatives
-    }
-  }
-
-  return alternatives
+function compareRecommendations(first: BagRecommendationItem, second: BagRecommendationItem) {
+  return first.rank - second.rank;
 }

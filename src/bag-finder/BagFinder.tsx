@@ -3,7 +3,7 @@ import { CompletionSummary } from './components/CompletionSummary';
 import { FinderProgress } from './components/FinderProgress';
 import { QuestionStep } from './components/QuestionStep';
 import { bagFinderQuestions } from './questions';
-import { getRecommendations } from './recommendations';
+import { getBagRecommendation } from './recommendations';
 import { useBagFinderState } from './useBagFinderState';
 import './bag-finder.css';
 
@@ -19,17 +19,17 @@ export function BagFinder() {
     restart,
   } = useBagFinderState(bagFinderQuestions);
   const recommendations = useMemo(
-    () => (state.isComplete ? getRecommendations(state.answers) : undefined),
+    () => (state.isComplete ? getBagRecommendation(state.answers) : undefined),
     [state.answers, state.isComplete],
   );
 
   return (
     <div className="bag-finder-app">
-      <header className="bag-finder-site-header" aria-label="BAGGU Bag Finder">
-        <span>BAGGU Bag Finder</span>
+      <header className="bag-finder-site-header" aria-label="BAGGU Bag Size Finder">
+        <span>BAGGU Bag Size Finder</span>
       </header>
 
-      <div className="bag-finder-marquee" aria-label="Find your perfect bag">
+      <div className="bag-finder-marquee" aria-label="Find your bag size">
         <div className="bag-finder-marquee__track" aria-hidden="true">
           {Array.from({ length: 2 }, (_, groupIndex) => (
             <div className="bag-finder-marquee__group" key={groupIndex}>
@@ -41,7 +41,7 @@ export function BagFinder() {
                     <circle cx="15.5" cy="9.5" r="1.4" />
                     <path d="M7.5 14.2c1.2 2 2.7 3 4.5 3s3.3-1 4.5-3" />
                   </svg>
-                  Find your perfect bag.
+                  Find your bag size.
                 </span>
               ))}
             </div>
@@ -51,18 +51,18 @@ export function BagFinder() {
 
       <main className="bag-finder-shell">
         <header className="bag-finder-header">
-          <p className="bag-finder-eyebrow">Guided shopping</p>
-          <h1>Find your everyday carry</h1>
+          <p className="bag-finder-eyebrow">Compare everyday bags</p>
+          <h1>Find the BAGGU bag and size for what you carry</h1>
           <p>
-            Answer a few questions about what you carry and how you like to move. Recommendations
-            will come next.
+            Answer a few capacity questions, then compare the recommended size against other
+            confirmed BAGGU options.
           </p>
         </header>
 
         <section className="bag-finder-panel" aria-labelledby="bag-finder-title">
           <div className="bag-finder-panel__topline">
             <h2 id="bag-finder-title">
-              {state.isComplete ? 'Answers saved' : 'Choose what fits best'}
+              {state.isComplete ? 'Recommended size' : 'Choose what fits best'}
             </h2>
             <FinderProgress
               currentQuestionIndex={state.currentQuestionIndex}

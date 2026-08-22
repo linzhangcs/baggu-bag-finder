@@ -1,9 +1,14 @@
-export { BagFinder } from './BagFinder'
-export { bagCandidates } from './candidates'
-export { getRecommendations, getSelectedNeeds } from './recommendations'
+export { BagFinder } from './BagFinder';
+export {
+  getBagFinderProfile,
+  getBagRecommendation,
+  getEligibleBags,
+  rankBagRecommendations,
+} from './recommendations';
 export type {
-  BagCandidate,
-  RecommendationItem,
-  RecommendationSet,
-  WeightedNeed,
-} from './types'
+  BagFinderProfile,
+  BagRecommendationItem,
+  BagRecommendationSet,
+  FitRequirement,
+  RecommendationReason,
+} from './types';
