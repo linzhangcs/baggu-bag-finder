@@ -122,7 +122,7 @@ export const bagSizeData: ProductSizeFact[] = [
     sourceUrl: 'https://baggu.com/products/nylon-loaf-bag-leopard',
     productUrl: 'https://baggu.com/products/nylon-loaf-bag-leopard',
     imageUrl:
-      'https://cdn.shopify.com/s/files/1/0851/3262/files/b752cbd7e1ba3817502084caf0ee53a68bc404a8-2048x2560_53469f59-0854-4098-b6a4-cad185431631.jpg?v=1784245736',
+      'https://cdn.shopify.com/s/files/1/0851/3262/files/b752c154ff147aeb05ceae4eda0fa86d5ca64814-2048x2560.jpg?v=1770186129&width=1200',
     imageAlt: 'Nylon Loaf Bag in Leopard',
     dimensions: { height: '5"', width: '11"', depth: '5"', raw: '5" H x 11" W x 5" L' },
     strapOrHandleLength: '39.4"',
@@ -414,7 +414,7 @@ export const bagSizeData: ProductSizeFact[] = [
     sourceUrl: 'https://baggu.com/products/medium-nylon-crescent-bag-caper',
     productUrl: 'https://baggu.com/products/medium-nylon-crescent-bag-caper',
     imageUrl:
-      'https://cdn.shopify.com/s/files/1/0851/3262/files/dbfdcfe25a3c9c974da15c48c85de8ee489665fb-2048x2560.jpg?v=1784166003',
+      'https://cdn.shopify.com/s/files/1/0851/3262/files/dbf42c859304fe808ab8b98ff1486271411abd79-2048x2560.jpg?v=1782704471&width=1200',
     imageAlt: 'Medium Nylon Crescent Bag in Caper',
     dimensions: { height: '8"', width: '13.75"', depth: '4"', raw: '8" H x 13.75" W x 4" L' },
     strapOrHandleLength: '47"',
@@ -476,7 +476,7 @@ export const bagSizeData: ProductSizeFact[] = [
     productFamily: 'Crescent',
     sizeLabel: 'Large',
     sourceUrl: 'https://baggu.com/products/medium-nylon-crescent-bag-caper',
-    productUrl: 'https://baggu.com/products/large-nylon-crescent-bag-black-6',
+    productUrl: 'https://baggu.com/products/large-nylon-crescent-bag-black-key-leash',
     imageUrl:
       'https://cdn.shopify.com/s/files/1/0851/3262/files/8fb50103d000e89cadbcea324e9296bcc3183e40-2048x2560_5107c7ce-b3f4-4836-838d-1bf1b34cd041.jpg?format=webp&height=1000&quality=85&v=1761332955&width=800',
     imageAlt: 'Large Nylon Crescent Bag in Black',

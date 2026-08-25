@@ -5,6 +5,7 @@ import { QuestionStep } from './components/QuestionStep';
 import { bagFinderQuestions } from './questions';
 import { getBagRecommendation } from './recommendations';
 import { useBagFinderState } from './useBagFinderState';
+import footerImage from '../assets/footer.png';
 import './bag-finder.css';
 
 export function BagFinder() {
@@ -63,7 +64,6 @@ export function BagFinder() {
           <div className="bag-finder-panel__topline">
             <h2 id="bag-finder-title">
               {/*{state.isComplete ? 'Recommended size' : 'Choose what fits best'}*/}
-              
             </h2>
             <FinderProgress
               currentQuestionIndex={state.currentQuestionIndex}
@@ -94,6 +94,10 @@ export function BagFinder() {
           )}
         </section>
       </main>
+
+      <footer className="bag-finder-footer">
+        <img src={footerImage} alt="Lin Likes BAGGU" />
+      </footer>
     </div>
   );
 }
