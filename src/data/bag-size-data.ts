@@ -8,6 +8,7 @@ export type ProductSizeFact = {
   productFamily: string;
   sizeLabel: string;
   sourceUrl: string;
+  productUrl?: string;
   imageUrl?: string;
   imageAlt?: string;
   dimensions?: {
@@ -47,6 +48,7 @@ export const bagSizeData: ProductSizeFact[] = [
     productFamily: 'Meringue',
     sizeLabel: 'Regular',
     sourceUrl: 'https://baggu.com/products/nylon-meringue-bag-piscine',
+    productUrl: 'https://baggu.com/products/nylon-meringue-bag-piscine',
     imageUrl:
       'https://cdn.shopify.com/s/files/1/0851/3262/files/c7349b915d29fe4edfa7454de0b8b6c2842411f5-2048x2560.jpg?v=1784907506',
     imageAlt: 'Nylon Meringue Bag in Piscine',
@@ -84,6 +86,10 @@ export const bagSizeData: ProductSizeFact[] = [
     productFamily: 'Meringue',
     sizeLabel: 'Small',
     sourceUrl: 'https://baggu.com/products/nylon-meringue-bag-piscine',
+    productUrl: 'https://baggu.com/products/small-nylon-meringue-bag-black',
+    imageUrl:
+      'https://cdn.shopify.com/s/files/1/0851/3262/files/c15d62cbe8c785375906afa062cfb8b453b4e381-2048x2560.jpg?v=1777061509',
+    imageAlt: 'Small Nylon Meringue Bag in Black',
     dimensions: { height: '6"', width: '9.6"', depth: '5"', raw: '6" H x 9.6" W x 5" D' },
     strapOrHandleLength: '11.5"',
     whatItFits: [
@@ -114,6 +120,7 @@ export const bagSizeData: ProductSizeFact[] = [
     productFamily: 'Loaf',
     sizeLabel: 'One size',
     sourceUrl: 'https://baggu.com/products/nylon-loaf-bag-leopard',
+    productUrl: 'https://baggu.com/products/nylon-loaf-bag-leopard',
     imageUrl:
       'https://cdn.shopify.com/s/files/1/0851/3262/files/b752cbd7e1ba3817502084caf0ee53a68bc404a8-2048x2560_53469f59-0854-4098-b6a4-cad185431631.jpg?v=1784245736',
     imageAlt: 'Nylon Loaf Bag in Leopard',
@@ -151,6 +158,7 @@ export const bagSizeData: ProductSizeFact[] = [
     productFamily: 'Cloud',
     sizeLabel: 'Everyday',
     sourceUrl: 'https://baggu.com/products/everyday-cloud-bag-cherry',
+    productUrl: 'https://baggu.com/products/everyday-cloud-bag-cherry',
     imageUrl:
       'https://cdn.shopify.com/s/files/1/0851/3262/files/f5a1cd83d123af00dd360a608ff5fe88124ba6da-2048x2560.jpg?v=1782583424',
     imageAlt: 'Everyday Cloud Bag in Cherry',
@@ -195,6 +203,10 @@ export const bagSizeData: ProductSizeFact[] = [
     productFamily: 'Cloud',
     sizeLabel: 'Cloud Bag',
     sourceUrl: 'https://baggu.com/products/everyday-cloud-bag-cherry',
+    productUrl: 'https://baggu.com/products/cloud-bag-black?variant=19811891183713',
+    imageUrl:
+      'https://cdn.shopify.com/s/files/1/0851/3262/files/6dd5fc56f7b7b091b07fae129e646ef53d877cd8-2048x2560.jpg?v=1784239846',
+    imageAlt: 'Cloud Bag in Black',
     dimensions: {
       height: '12.75"',
       width: '13.75"',
@@ -230,6 +242,10 @@ export const bagSizeData: ProductSizeFact[] = [
     productFamily: 'Cloud',
     sizeLabel: 'Small carry-on',
     sourceUrl: 'https://baggu.com/products/everyday-cloud-bag-cherry',
+    productUrl: 'https://baggu.com/products/small-cloud-carry-on-black',
+    imageUrl:
+      'https://cdn.shopify.com/s/files/1/0851/3262/files/0dd586fa4b116347aa47a2ffe0e6a359f354e51f-2048x2560_76070240-0adb-4c10-b8f7-57eaaba63052.jpg?v=1784244636',
+    imageAlt: 'Small Cloud Carry-On in Black',
     dimensions: {
       height: '12.5"',
       width: '16.5"',
@@ -259,6 +275,10 @@ export const bagSizeData: ProductSizeFact[] = [
     productFamily: 'Cloud',
     sizeLabel: 'Carry-on',
     sourceUrl: 'https://baggu.com/products/everyday-cloud-bag-cherry',
+    productUrl: 'https://baggu.com/products/cloud-carry-on-black-5',
+    imageUrl:
+      'https://cdn.shopify.com/s/files/1/0851/3262/files/389a3e75fa512953dc032b89bfe7ef4f682837b1-2048x2560.jpg?v=1784239968',
+    imageAlt: 'Cloud Carry-On in Black',
     dimensions: {
       height: '13.75"',
       width: '19.25"',
@@ -295,6 +315,7 @@ export const bagSizeData: ProductSizeFact[] = [
     productFamily: 'Bowler',
     sizeLabel: 'Medium',
     sourceUrl: 'https://baggu.com/products/medium-nylon-bowler-bag-caper',
+    productUrl: 'https://baggu.com/products/medium-nylon-bowler-bag-caper',
     imageUrl:
       'https://cdn.shopify.com/s/files/1/0851/3262/files/7a115944a6751992732633e6df2cc94ba9b05a22-2048x2560_78d6fc7d-f30d-40d6-98a2-076c56780532.jpg?v=1784317984',
     imageAlt: 'Medium Nylon Bowler Bag in Caper',
@@ -330,6 +351,10 @@ export const bagSizeData: ProductSizeFact[] = [
     productFamily: 'Bowler',
     sizeLabel: 'Small',
     sourceUrl: 'https://baggu.com/products/medium-nylon-bowler-bag-caper',
+    productUrl: 'https://baggu.com/products/small-nylon-bowler-bag-caper',
+    imageUrl:
+      'https://checkout.baggu.com/cdn/shop/files/f3861910937f53655327ecffae694c3c698749b6-2048x2560_800x1000_crop_center.progressive.jpg?v=1782715285',
+    imageAlt: 'Small Nylon Bowler Bag in Black',
     dimensions: { height: '4"', width: '9"', depth: '3.1"', raw: '4" H x 9" W x 3.1" L' },
     strapDrop: '13"',
     whatItFits: [
@@ -360,6 +385,10 @@ export const bagSizeData: ProductSizeFact[] = [
     productFamily: 'Bowler',
     sizeLabel: 'Regular',
     sourceUrl: 'https://baggu.com/products/medium-nylon-bowler-bag-caper',
+    productUrl: 'https://baggu.com/products/nylon-bowler-bag-black',
+    imageUrl:
+      'https://cdn.shopify.com/s/files/1/0851/3262/files/27db9dbad3c9f0a3a101f9b8f9b8130f5b961315-2048x2560.jpg?v=1781820009',
+    imageAlt: 'Nylon Bowler Bag in Black',
     dimensions: { height: '6"', width: '11.8"', depth: '4"', raw: 'W 11.8" x H 6" x D 4"' },
     strapOrHandleLength: '14"',
     whatItFits: ['Puffy Glasses Sleeve', 'Go Pouch Set - Small Pouch', 'phone', 'keys'],
@@ -383,6 +412,7 @@ export const bagSizeData: ProductSizeFact[] = [
     productFamily: 'Crescent',
     sizeLabel: 'Medium',
     sourceUrl: 'https://baggu.com/products/medium-nylon-crescent-bag-caper',
+    productUrl: 'https://baggu.com/products/medium-nylon-crescent-bag-caper',
     imageUrl:
       'https://cdn.shopify.com/s/files/1/0851/3262/files/dbfdcfe25a3c9c974da15c48c85de8ee489665fb-2048x2560.jpg?v=1784166003',
     imageAlt: 'Medium Nylon Crescent Bag in Caper',
@@ -419,6 +449,10 @@ export const bagSizeData: ProductSizeFact[] = [
     productFamily: 'Crescent',
     sizeLabel: 'Small',
     sourceUrl: 'https://baggu.com/products/medium-nylon-crescent-bag-caper',
+    productUrl: 'https://baggu.com/products/small-nylon-crescent-bag-black-key-leash',
+    imageUrl:
+      'https://cdn.shopify.com/s/files/1/0851/3262/files/193e3d4f086038d4c07b4834e5fad7fee80166a7-2048x2560_10640691-af91-491a-b2c8-5df58bff7a49.jpg?v=1784245001',
+    imageAlt: 'Small Nylon Crescent Bag in Black',
     dimensions: { height: '5.5"', width: '10.2"', depth: '3.3"', raw: '5.5" H x 10.2" W x 3.3" L' },
     strapOrHandleLength: '51"',
     whatItFits: ['32 oz water bottle', 'phone', 'keys'],
@@ -442,6 +476,10 @@ export const bagSizeData: ProductSizeFact[] = [
     productFamily: 'Crescent',
     sizeLabel: 'Large',
     sourceUrl: 'https://baggu.com/products/medium-nylon-crescent-bag-caper',
+    productUrl: 'https://baggu.com/products/large-nylon-crescent-bag-black-6',
+    imageUrl:
+      'https://cdn.shopify.com/s/files/1/0851/3262/files/8fb50103d000e89cadbcea324e9296bcc3183e40-2048x2560_5107c7ce-b3f4-4836-838d-1bf1b34cd041.jpg?format=webp&height=1000&quality=85&v=1761332955&width=800',
+    imageAlt: 'Large Nylon Crescent Bag in Black',
     dimensions: {
       height: '12.5"',
       width: '19.5"',
@@ -477,6 +515,7 @@ export const bagSizeData: ProductSizeFact[] = [
     productFamily: 'Baggu reusable',
     sizeLabel: 'Standard',
     sourceUrl: 'https://baggu.com/products/standard-baggu-castle-creatures',
+    productUrl: 'https://baggu.com/products/standard-baggu-castle-creatures',
     imageUrl:
       'https://cdn.shopify.com/s/files/1/0851/3262/files/a2160f5ef08830382ba8e71b0b7234315c401938-2048x2560.jpg?v=1782714873',
     imageAlt: 'Standard Baggu in Castle Creatures',
@@ -504,6 +543,10 @@ export const bagSizeData: ProductSizeFact[] = [
     productFamily: 'Baggu reusable',
     sizeLabel: 'Baby',
     sourceUrl: 'https://baggu.com/products/standard-baggu-castle-creatures',
+    productUrl: 'https://baggu.com/products/baby-baggu-carrots',
+    imageUrl:
+      'https://cdn.shopify.com/s/files/1/0851/3262/files/6b03f707cd197d82e0c535edab360ef9416818d4-2048x2560_fee1094b-881a-44f2-b570-ba1d7e0de89a.jpg?v=1768929486',
+    imageAlt: 'Baby Baggu in Carrots',
     dimensions: { height: '18"', width: '10"', depth: '4"', raw: '18" H x 10" W x 4" L' },
     whatItFits: ['A six pack of drinks', 'pair of shoes'],
     modelHeight: '5\' 5"',
@@ -526,6 +569,10 @@ export const bagSizeData: ProductSizeFact[] = [
     productFamily: 'Baggu reusable',
     sizeLabel: 'Big',
     sourceUrl: 'https://baggu.com/products/standard-baggu-castle-creatures',
+    productUrl: 'https://baggu.com/products/big-baggu-black',
+    imageUrl:
+      'https://cdn.shopify.com/s/files/1/0851/3262/files/0efb991b0ee6c1efd543500b547117ce8a4b9b6f-2048x2560_b21f71ea-b3c9-4392-ab1c-e7fbedf710bb.jpg?v=1784239635',
+    imageAlt: 'Big Baggu in Black',
     dimensions: { height: '33"', width: '18"', depth: '9"', raw: '33" H x 18" W x 9" L' },
     whatItFits: ['Laundry', 'blankets'],
     modelHeight: '5\' 5"',

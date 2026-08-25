@@ -78,7 +78,8 @@ Use only confirmed facts from the listed BAGGU product pages and their on-page B
 - Loaf product details say it fits a water bottle, but the comparison section does not specify bottle size.
 - The Cloud family appears travel-oriented based on Packing Cube Set and Dopp Kit fits, but Everyday Cloud Bag itself is not marked `goodForTravel` because its comparison fit list does not include travel-specific items.
 - Source pages compare related products that are not necessarily the same style family, such as Loaf with Pochette and Bowler, or Meringue with Bowler and Shoulder Bag. Those are not treated as same-family size variants unless the product family itself is shared.
-- Image URLs are product-page CDN image references for the supplied product pages only. Related comparison variants need confirmed image URLs before display.
+- Image URLs are BAGGU product-page CDN image references. Some related comparison variants use a different confirmed colorway image than the original source product page.
+- Frontend `productUrl` values point to the correct BAGGU product size page for shopping navigation. `sourceUrl` remains the page where the product facts were confirmed.
 
 ## Potential size-finder recommendation attributes
 

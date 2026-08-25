@@ -26,7 +26,7 @@ export function BagFinder() {
   return (
     <div className="bag-finder-app">
       <header className="bag-finder-site-header" aria-label="BAGGU Bag Size Finder">
-        <span>BAGGU Bag Size Finder</span>
+        <span>BAGGU Bag Finder</span>
       </header>
 
       <div className="bag-finder-marquee" aria-label="Find your bag size">
@@ -41,7 +41,7 @@ export function BagFinder() {
                     <circle cx="15.5" cy="9.5" r="1.4" />
                     <path d="M7.5 14.2c1.2 2 2.7 3 4.5 3s3.3-1 4.5-3" />
                   </svg>
-                  Find your bag size.
+                  Find your perfect baggu bag.
                 </span>
               ))}
             </div>
@@ -62,7 +62,8 @@ export function BagFinder() {
         <section className="bag-finder-panel" aria-labelledby="bag-finder-title">
           <div className="bag-finder-panel__topline">
             <h2 id="bag-finder-title">
-              {state.isComplete ? 'Recommended size' : 'Choose what fits best'}
+              {/*{state.isComplete ? 'Recommended size' : 'Choose what fits best'}*/}
+              
             </h2>
             <FinderProgress
               currentQuestionIndex={state.currentQuestionIndex}
