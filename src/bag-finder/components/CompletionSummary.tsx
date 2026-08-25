@@ -148,41 +148,54 @@ function RecommendationCard({ item, rankLabel, variant }: RecommendationCardProp
     <article className="recommendation-card" data-variant={variant} aria-labelledby={titleId}>
       <ProductMedia item={item} />
 
-      <div className="recommendation-card__topline">
-        <p className="recommendation-card__rank">{rankLabel}</p>
-        <p className="recommendation-card__price">{product.sizeLabel}</p>
+      <div className="recommendation-card__content">
+        <div className="recommendation-card__topline">
+          <p className="recommendation-card__rank">{rankLabel}</p>
+          <p className="recommendation-card__price">{product.sizeLabel}</p>
+        </div>
+
+        <div className="recommendation-card__heading">
+          <h3 id={titleId}>{product.canonicalName}</h3>
+          {product.intendedUse ? <p>{product.intendedUse}</p> : null}
+        </div>
+
+        <ProductFacts item={item} />
+
+        {item.reasons.length > 0 ? (
+          <section
+            className="recommendation-card__reasons"
+            aria-label={`Why ${product.canonicalName} matched`}
+          >
+            <h4>Why it matched</h4>
+            <ul>
+              {item.reasons.map((reason) => (
+                <li key={`${product.id}-${reason.label}`}>
+                  <span>{reason.label}</span>
+                  {reason.detail}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
+        {item.tradeoff ? (
+          <p className="recommendation-card__tradeoff">
+            <span>Tradeoff</span>
+            {item.tradeoff}
+          </p>
+        ) : null}
+
+        {product.productUrl ? (
+          <a
+            className="recommendation-card__link"
+            href={product.productUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            View product
+          </a>
+        ) : null}
       </div>
-
-      <div className="recommendation-card__heading">
-        <h3 id={titleId}>{product.canonicalName}</h3>
-        {product.intendedUse ? <p>{product.intendedUse}</p> : null}
-      </div>
-
-      <ProductFacts item={item} />
-
-      {item.reasons.length > 0 ? (
-        <section
-          className="recommendation-card__reasons"
-          aria-label={`Why ${product.canonicalName} matched`}
-        >
-          <h4>Why it matched</h4>
-          <ul>
-            {item.reasons.map((reason) => (
-              <li key={`${product.id}-${reason.label}`}>
-                <span>{reason.label}</span>
-                {reason.detail}
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
-
-      {item.tradeoff ? (
-        <p className="recommendation-card__tradeoff">
-          <span>Tradeoff</span>
-          {item.tradeoff}
-        </p>
-      ) : null}
     </article>
   );
 }
@@ -205,6 +218,16 @@ function ComparisonCard({ item, isRecommended }: ComparisonCardProps) {
         <p>{product.sizeLabel}</p>
       </div>
       <ProductFacts item={item} compact />
+      {product.productUrl ? (
+        <a
+          className="comparison-card__link"
+          href={product.productUrl}
+          target="_blank"
+          rel="noreferrer"
+        >
+          View product
+        </a>
+      ) : null}
     </article>
   );
 }
