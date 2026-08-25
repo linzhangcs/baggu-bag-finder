@@ -2,7 +2,7 @@
     --baggu-bg: #f6f4ee;
     --baggu-text: #000;
     --baggu-muted: rgba(0, 0, 0, 0.58);
-    --baggu-border: #000;
+    --baggu-border: #6e6d6a;
     --baggu-accent: #4788ed;
     --baggu-side: 16px;
 
@@ -35,6 +35,7 @@
 
 .bag-finder-footer {
     width: 100%;
+    margin-top: 8rem;
     background: var(--baggu-bg);
 }
 

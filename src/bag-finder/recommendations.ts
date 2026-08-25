@@ -1,5 +1,5 @@
-import { bagSizeData } from '../data/bag-size-data.ts';
 import type { CarryLevel, ProductSizeFact } from '../data/bag-size-data.ts';
+import { bagSizeData } from '../data/bag-size-data.ts';
 import { bagFinderQuestions } from './questions.ts';
 import type {
   BagFinderProfile,
@@ -356,20 +356,20 @@ function getRequirementLabel(requirement: FitRequirement) {
 function getRequirementDetail(product: ProductSizeFact, requirement: FitRequirement) {
   switch (requirement) {
     case 'phone':
-      return `${product.canonicalName} lists phone fit in BAGGU fit data.`;
+      return `${product.canonicalName} fits phone.`;
     case 'waterBottle':
-      return `${product.canonicalName} lists water bottle fit in BAGGU fit data.`;
+      return `${product.canonicalName} fits water bottle.`;
     case 'tablet':
-      return `${product.canonicalName} lists Puffy Tablet Sleeve fit.`;
+      return `${product.canonicalName} fits Puffy Tablet Sleeve.`;
     case 'laptop13':
     case 'laptop16':
-      return `${product.canonicalName} lists ${product.attributes.confirmedLaptopSize}.`;
+      return `${product.canonicalName} fits ${product.attributes.confirmedLaptopSize}.`;
     case 'groceries':
-      return `${product.canonicalName} is confirmed for a full load of groceries.`;
+      return `${product.canonicalName} fits a full load of groceries.`;
     case 'extraLayer':
-      return `${product.canonicalName} is confirmed for larger soft items.`;
+      return `${product.canonicalName} fits larger items.`;
     case 'travel':
-      return `${product.canonicalName} lists travel-oriented items in BAGGU fit data.`;
+      return `${product.canonicalName} fits travel-oriented items.`;
   }
 }
 
@@ -380,14 +380,14 @@ function getUseCaseReason(
   if (primaryUse === 'travel' && product.attributes.goodForTravel === true) {
     return {
       label: 'Travel',
-      detail: 'BAGGU fit data lists travel-oriented items like packing cubes or a Dopp kit.',
+      detail: 'fits travel-oriented items like packing cubes or a Dopp kit.',
     };
   }
 
   if (primaryUse === 'groceries' && product.attributes.goodForGroceries === true) {
     return {
       label: 'Groceries',
-      detail: product.capacityOrVolume ?? 'BAGGU confirms grocery capacity for this product.',
+      detail: product.capacityOrVolume ?? 'this product has grocery capacity.',
     };
   }
 
