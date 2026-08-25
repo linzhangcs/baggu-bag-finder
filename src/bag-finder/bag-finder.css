@@ -123,7 +123,7 @@
     max-width: 780px;
     margin: 0;
     font-size: clamp(40px, 10vw, 72px);
-    font-weight: 500;
+    font-weight: 700;
     line-height: 0.9;
     letter-spacing: -0.04em;
     text-transform: uppercase;
@@ -202,10 +202,9 @@
 .recommendation-card__heading h3,
 .comparison-card h4 {
     margin: 0;
-    font-weight: 500;
+    font-weight: 700;
     line-height: 0.95;
     letter-spacing: -0.02em;
-    text-transform: uppercase;
 }
 
 .completion-summary__intro h3 {
@@ -400,6 +399,7 @@
 .comparison-card__link {
     display: inline-block;
     box-sizing: border-box;
+    align-self: center;
     width: 100%;
     border: 1.5px solid currentColor;
     border-radius: 999px;
